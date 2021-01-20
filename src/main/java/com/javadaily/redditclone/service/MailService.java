@@ -34,7 +34,7 @@ public class MailService {
             mailSender.send(mimeMessagePreparator);
             log.info("Activation Mail sent !");
         } catch (MailException e) {
-            log.error("Execption occured during sending the email to the user", e);
+            log.error("Exception occurred during sending the email to the user", e);
             throw new SpringRedditException("Exception occurred when sending mail to " + notificationEmail.getRecipient(), e);
 
         }

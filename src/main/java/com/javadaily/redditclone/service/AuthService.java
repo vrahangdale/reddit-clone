@@ -20,9 +20,9 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AuthService {
 
-   /*Rather than making it a field injection we are using the constructor injection using lombock
-   * this is a better approach and we should usually avoid usig the field injection and user constructor
-   * injection*/
+   /* Rather than making it a field injection we are using the constructor injection using lombock
+   * this is a better approach and we should usually avoid using the field injection and user constructor
+   * injection */
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
