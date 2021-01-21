@@ -1,5 +1,6 @@
 package com.javadaily.redditclone.service;
 
+import com.javadaily.redditclone.dto.LoginRequest;
 import com.javadaily.redditclone.dto.RegisterRequest;
 import com.javadaily.redditclone.exceptions.SpringRedditException;
 import com.javadaily.redditclone.model.NotificationEmail;
@@ -9,6 +10,9 @@ import com.javadaily.redditclone.repository.UserRepository;
 import com.javadaily.redditclone.repository.VerificationTokenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,16 +26,17 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AuthService {
 
-   /* Rather than making it a field injection we are using the constructor injection using lombock
-   * this is a better approach and we should usually avoid using the field injection and user constructor
-   * injection */
+    /* Rather than making it a field injection we are using the constructor injection using lombock
+     * this is a better approach and we should usually avoid using the field injection and user constructor
+     * injection */
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
     private final MailService mailService;
+    private final AuthenticationManager authenticationManager;
 
     @Transactional
-    public void signup(RegisterRequest registerRequest){ // registerRequest is just an dto
+    public void signup(RegisterRequest registerRequest) { // registerRequest is just an dto
 
         User user = new User();
 
@@ -45,11 +50,11 @@ public class AuthService {
 
         String token = generateVerificationToken(user);
 
-         mailService.sendMail(new NotificationEmail("Please activate your account",
-                 user.getEmail(),
-                 "Thank you for signing up to Spring Reddit, " +
-                         "please click on the below url to activate your account : " +
-                         "http://localhost:8081/api/auth/accountVerification/" + token));
+        mailService.sendMail(new NotificationEmail("Please activate your account",
+                user.getEmail(),
+                "Thank you for signing up to Spring Reddit, " +
+                        "please click on the below url to activate your account : " +
+                        "http://localhost:8081/api/auth/accountVerification/" + token));
     }
 
     private String generateVerificationToken(User user) {
@@ -67,10 +72,10 @@ public class AuthService {
 
     public void verifyAccount(String token) {
 
-       Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
-       verificationToken.orElseThrow(()->new SpringRedditException("Invalid Token"));
+        Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
+        verificationToken.orElseThrow(() -> new SpringRedditException("Invalid Token"));
 
-       fetchUserAndEnable(verificationToken.get());
+        fetchUserAndEnable(verificationToken.get());
 
     }
 
@@ -78,9 +83,14 @@ public class AuthService {
     private void fetchUserAndEnable(VerificationToken verificationToken) {
         String username = verificationToken.getUser().getUsername();
 
-        User user = userRepository.findByUsername(username).orElseThrow(()-> new SpringRedditException("User not Found"));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new SpringRedditException("User not Found"));
         user.setEnabled(true);
         userRepository.save(user);
+
+    }
+
+    public void login(LoginRequest loginRequest) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
 
     }
 }
