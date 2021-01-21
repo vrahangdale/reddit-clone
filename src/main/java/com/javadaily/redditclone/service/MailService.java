@@ -19,7 +19,7 @@ public class MailService {
     private final JavaMailSender mailSender;
     private final MailContentBuilder mailContentBuilder;
 
-    @Async
+    @Async // we are using async to send the email on a different thread and make our application faster
     void sendMail(NotificationEmail notificationEmail) {
 
         MimeMessagePreparator mimeMessagePreparator = mimeMessage -> {
