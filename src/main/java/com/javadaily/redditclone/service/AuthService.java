@@ -29,11 +29,11 @@ public class AuthService {
     /* Rather than making it a field injection we are using the constructor injection using lombock
      * this is a better approach and we should usually avoid using the field injection and user constructor
      * injection */
-    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder; // comes from the SecurityConfig
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
     private final MailService mailService;
-    private final AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager; // comes from the SecurityConfig
 
     @Transactional
     public void signup(RegisterRequest registerRequest) { // registerRequest is just an dto
@@ -90,6 +90,7 @@ public class AuthService {
     }
 
     public void login(LoginRequest loginRequest) {
+        // this is  provided by the
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUserName(), loginRequest.getPassword()));
 
     }

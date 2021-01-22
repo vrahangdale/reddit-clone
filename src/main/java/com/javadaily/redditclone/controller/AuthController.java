@@ -16,6 +16,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
+    // here the registerRequest object is the dto we have created
     public ResponseEntity<String> signup(@RequestBody RegisterRequest registerRequest){
         authService.signup(registerRequest);
         return new ResponseEntity<>("User registration Successful", HttpStatus.OK);
