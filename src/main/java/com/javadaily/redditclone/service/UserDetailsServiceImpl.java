@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userOptional.orElseThrow(()-> new UsernameNotFoundException("No username with name " + userName));
 
         // implementing the UserDetails interface
-
+        // we are returning the UserDetail object here
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 user.isEnabled(),true,true,true,
                 getAuthorities("USER"));

@@ -1,5 +1,6 @@
 package com.javadaily.redditclone.controller;
 
+import com.javadaily.redditclone.dto.AuthenticationResponse;
 import com.javadaily.redditclone.dto.LoginRequest;
 import com.javadaily.redditclone.dto.RegisterRequest;
 import com.javadaily.redditclone.service.AuthService;
@@ -30,9 +31,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public void login(@RequestBody LoginRequest loginRequest){
+    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest){
 
-        authService.login(loginRequest);
+        System.out.println("i am here");
+        return authService.login(loginRequest);
     }
 
 }
