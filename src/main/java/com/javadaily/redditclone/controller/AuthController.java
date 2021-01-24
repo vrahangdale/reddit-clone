@@ -1,5 +1,7 @@
 package com.javadaily.redditclone.controller;
 
+import com.javadaily.redditclone.dto.AuthenticationResponse;
+import com.javadaily.redditclone.dto.LoginRequest;
 import com.javadaily.redditclone.dto.RegisterRequest;
 import com.javadaily.redditclone.service.AuthService;
 import lombok.AllArgsConstructor;
@@ -15,6 +17,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
+    // here the registerRequest object is the dto we have created
     public ResponseEntity<String> signup(@RequestBody RegisterRequest registerRequest){
         authService.signup(registerRequest);
         return new ResponseEntity<>("User registration Successful", HttpStatus.OK);
@@ -25,6 +28,12 @@ public class AuthController {
     public ResponseEntity<String> verifyAccount(@PathVariable String token){
         authService.verifyAccount(token);
         return new ResponseEntity<>("Account activated successfully", HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest){
+
+        return authService.login(loginRequest);
     }
 
 }
