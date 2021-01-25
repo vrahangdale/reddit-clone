@@ -1,21 +1,38 @@
 package com.javadaily.redditclone.controller;
 
+import com.javadaily.redditclone.dto.SubredditDto;
+import com.javadaily.redditclone.service.SubredditService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/sudreddit")
+@RequestMapping("/api/subreddit")
 public class SubredditController {
 
-    @GetMapping("/all")
-    public void getAllSubreddit(){
+    private final SubredditService subredditService; // i am using the constructor injection so not using autowired here
 
-        System.out.println("I am called from subreddit");
+    @PostMapping
+    public ResponseEntity<SubredditDto> createSubreddit(@RequestBody SubredditDto subredditDto){
 
+        // ResponseEntity helps in making the response more understandable for the api caller
+        return ResponseEntity.status(HttpStatus.CREATED).body(subredditService.save(subredditDto));
+
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SubredditDto>> getAllSubreddit(){
+        return ResponseEntity.status(HttpStatus.OK).body(subredditService.getAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<SubredditDto> getSubreddit(@PathVariable Long id){
+
+        return ResponseEntity.status(HttpStatus.OK).body(subredditService.get(id));
     }
 }

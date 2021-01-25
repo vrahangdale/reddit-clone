@@ -33,7 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String jwt = getJwtFromRequest(httpServletRequest);
-        System.out.println(jwt);
+
 
         if (StringUtils.hasText(jwt) && jwtProvider.validateJwtToken(jwt)){
 
@@ -46,7 +46,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            System.out.println(user.toString());
 
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
