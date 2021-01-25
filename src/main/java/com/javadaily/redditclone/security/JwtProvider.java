@@ -24,7 +24,7 @@ public class JwtProvider {
 
     private KeyStore keyStore;
     //@Value("${jwt.expiration.time}")
-    private long jwtExpirationInMillis = 100000; //
+    private long jwtExpirationInMillis = 10000000; //
 
     @PostConstruct
     public void init() {

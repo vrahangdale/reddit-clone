@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @AllArgsConstructor
@@ -18,15 +20,19 @@ public class SubredditController {
     @PostMapping
     public ResponseEntity<SubredditDto> createSubreddit(@RequestBody SubredditDto subredditDto){
 
+        // ResponseEntity helps in making the response more understandable for the api caller
         return ResponseEntity.status(HttpStatus.CREATED).body(subredditService.save(subredditDto));
 
     }
 
-
     @GetMapping
-    public void getAllSubreddit(){
-        // TODO: 2021-01-23 implement the  get all subreddit feature
-        System.out.println("I am called from subreddit get all");
+    public ResponseEntity<List<SubredditDto>> getAllSubreddit(){
+        return ResponseEntity.status(HttpStatus.OK).body(subredditService.getAll());
+    }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<SubredditDto> getSubreddit(@PathVariable Long id){
+
+        return ResponseEntity.status(HttpStatus.OK).body(subredditService.get(id));
     }
 }
