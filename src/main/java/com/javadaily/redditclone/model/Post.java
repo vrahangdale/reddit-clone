@@ -45,8 +45,6 @@ public class Post {
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
 
-
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "id", referencedColumnName = "id")
     private Subreddit subreddit;
