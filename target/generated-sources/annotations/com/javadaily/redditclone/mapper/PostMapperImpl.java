@@ -3,6 +3,7 @@ package com.javadaily.redditclone.mapper;
 import com.javadaily.redditclone.dto.PostRequest;
 import com.javadaily.redditclone.dto.PostRequest.PostRequestBuilder;
 import com.javadaily.redditclone.dto.PostResponse;
+import com.javadaily.redditclone.dto.PostResponse.PostResponseBuilder;
 import com.javadaily.redditclone.model.Post;
 import com.javadaily.redditclone.model.Post.PostBuilder;
 import com.javadaily.redditclone.model.Subreddit;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-01-25T16:48:58-0800",
+    date = "2021-01-26T21:43:41-0800",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 11.0.3 (JetBrains s.r.o)"
 )
 @Component
@@ -65,16 +66,16 @@ public class PostMapperImpl extends PostMapper {
             return null;
         }
 
-        PostResponse postResponse = new PostResponse();
+        PostResponseBuilder postResponse = PostResponse.builder();
 
-        postResponse.setId( post.getPostId() );
-        postResponse.setSubredditName( postSubredditName( post ) );
-        postResponse.setUserName( postUserUsername( post ) );
-        postResponse.setPostName( post.getPostName() );
-        postResponse.setUrl( post.getUrl() );
-        postResponse.setDescription( post.getDescription() );
+        postResponse.id( post.getPostId() );
+        postResponse.subredditName( postSubredditName( post ) );
+        postResponse.userName( postUserUsername( post ) );
+        postResponse.postName( post.getPostName() );
+        postResponse.url( post.getUrl() );
+        postResponse.description( post.getDescription() );
 
-        return postResponse;
+        return postResponse.build();
     }
 
     private String postSubredditName(Post post) {
