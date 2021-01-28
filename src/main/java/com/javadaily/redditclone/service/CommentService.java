@@ -3,6 +3,7 @@ package com.javadaily.redditclone.service;
 import com.javadaily.redditclone.dto.CommentDto;
 import com.javadaily.redditclone.exceptions.PostNotFoundException;
 import com.javadaily.redditclone.mapper.CommentMapper;
+import com.javadaily.redditclone.model.NotificationEmail;
 import com.javadaily.redditclone.model.Post;
 import com.javadaily.redditclone.model.User;
 import com.javadaily.redditclone.repository.CommentRepository;
@@ -24,6 +25,9 @@ public class CommentService {
     private CommentMapper commentMapper;
     private AuthService authService;
     private UserRepository userRepository;
+    private MailService mailService;
+    private MailContentBuilder mailContentBuilder;
+    private final String POST_URl ="";
 
 
     public void save(CommentDto commentDto) {
@@ -32,6 +36,13 @@ public class CommentService {
                 .orElseThrow(()->new PostNotFoundException("No Post found with id " + commentDto.getPostId().toString()));
 
         commentRepository.save(commentMapper.map(commentDto, authService.getCurrentUser(), post));
+
+       String message = mailContentBuilder.build(authService.getCurrentUser() + " posted a comment on your post" + POST_URl);
+        sendCommentNotificationMessage(message, post.getUser());
+    }
+
+    private void sendCommentNotificationMessage(String message, User user) {
+        mailService.sendMail(new NotificationEmail(user.getUsername() + " Commented on your post", user.getEmail(), message));
     }
 
     public List<CommentDto> getAllCommentByPost(Long id) {
