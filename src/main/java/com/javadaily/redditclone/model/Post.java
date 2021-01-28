@@ -37,7 +37,7 @@ public class Post {
     @Lob
     private String description;
 
-    private int voteCount=0;
+    private int voteCount = 0;
 
     private Instant createdDate;
 
