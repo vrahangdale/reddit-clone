@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-01-26T21:43:41-0800",
+    date = "2021-02-03T22:15:16-0800",
     comments = "version: 1.4.1.Final, compiler: javac, environment: Java 11.0.3 (JetBrains s.r.o)"
 )
 @Component
@@ -56,6 +56,7 @@ public class PostMapperImpl extends PostMapper {
             post.user( user );
         }
         post.createdDate( java.time.Instant.now() );
+        post.voteCount( 0 );
 
         return post.build();
     }
@@ -74,6 +75,12 @@ public class PostMapperImpl extends PostMapper {
         postResponse.postName( post.getPostName() );
         postResponse.url( post.getUrl() );
         postResponse.description( post.getDescription() );
+        postResponse.voteCount( post.getVoteCount() );
+
+        postResponse.commentCount( commentCount(post) );
+        postResponse.duration( getDuration(post) );
+        postResponse.upVote( isPostUpVoted(post) );
+        postResponse.downVote( isPostDownVoted(post) );
 
         return postResponse.build();
     }
